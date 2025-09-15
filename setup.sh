@@ -106,7 +106,10 @@ setup_baseband_guard() {
 
 show_config_lsm_notice() {
 	awk '/^[[:space:]]*config[[:space:]]+LSM$/ { found=1; exit } END { if (!found) exit 1 }' security/Kconfig || exit 0
-	awk '
+	echo ""	
+ 	echo "Please manually set your defconfig, select one append to your defconfig:"
+	echo ""	
+ 	awk '
 	/^[[:space:]]*config[[:space:]]+LSM$/ { in_lsm=1; next }
 	in_lsm && /^[[:space:]]*config[[:space:]]+/ { exit }
 	in_lsm && /^[[:space:]]*default/ {
