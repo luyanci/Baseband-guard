@@ -105,28 +105,29 @@ setup_baseband_guard() {
 }
 
 show_config_lsm_notice() {
-	awk '/^[[:space:]]*config[[:space:]]+LSM$/ { found=1; exit } END { if (!found) exit 1 }' security/Kconfig || exit 0
-	echo ""	
- 	echo "Please manually set your defconfig, select one append to your defconfig:"
-	echo ""	
- 	awk '
-	/^[[:space:]]*config[[:space:]]+LSM$/ { in_lsm=1; next }
-	in_lsm && /^[[:space:]]*config[[:space:]]+/ { exit }
-	in_lsm && /^[[:space:]]*default/ {
-	    match($0, /"([^"]+)"/, m)
-	    if ($0 ~ /if[[:space:]]+/) {
-	        sub(/.*if[[:space:]]+/, "", $0)
-	        cond = $0
-	        print "if " cond " enabled:"
-	    } else {
-	        print "else:"
-	    }
-	    if (m[1] != "") {
-	        print "CONFIG_LSM=" m[1] ",baseband_guard"
-	        print ""
-	    }
-	}
-	' security/Kconfig
+    if awk '/^[[:space:]]*config[[:space:]]+LSM$/ { found=1; exit } END { exit !found }' security/Kconfig; then
+        echo ""
+        echo "Please manually set your defconfig, select one append to your defconfig:"
+        echo ""
+        awk '
+        /^[[:space:]]*config[[:space:]]+LSM$/ { in_lsm=1; next }
+        in_lsm && /^[[:space:]]*config[[:space:]]+/ { exit }
+        in_lsm && /^[[:space:]]*default/ {
+            match($0, /"([^"]+)"/, m)
+            if ($0 ~ /if[[:space:]]+/) {
+                sub(/.*if[[:space:]]+/, "", $0)
+                cond = $0
+                print "if " cond " enabled:"
+            } else {
+                print "else:"
+            }
+            if (m[1] != "") {
+                print "CONFIG_LSM=" m[1] ",baseband_guard"
+                print ""
+            }
+        }
+        ' security/Kconfig
+    fi
 }
 
 # Args
