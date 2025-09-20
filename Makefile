@@ -15,19 +15,19 @@ ifneq ($(shell grep -q "if (!new_value && bbg_process_setpermissive())" $(srctre
   KERNEL_NUM := $(shell echo $$(( $(VERSION) * 100 + $(PATCHLEVEL) )) )
   $(info -- KERNEL_NUM: $(KERNEL_NUM))
   ifeq ($(shell [ $(KERNEL_NUM) -lt 417 ] && echo 1 || echo 0),1)
-	$(info -- BBG: Inserting bbg_process_setpermissive() check into sel_write_enforce for <4.17 Kernel)
-	$(shell sed -i '/if (new_value != selinux_enforcing) {/a \
-	if (!new_value && bbg_process_setpermissive()) { \
-		length = -EACCES; \
-		goto out; \
-	}' $(srctree)/security/selinux/selinuxfs.c)
+    $(info -- BBG: Inserting bbg_process_setpermissive() check into sel_write_enforce for <4.17 Kernel)
+    $(shell sed -i '/if (new_value != selinux_enforcing) {/a \
+    if (!new_value && bbg_process_setpermissive()) { \
+        length = -EACCES; \
+        goto out; \
+    }' $(srctree)/security/selinux/selinuxfs.c)
   else
-	$(info -- BBG: Inserting bbg_process_setpermissive() check into sel_write_enforce for >=4.17 Kernel)
-	$(shell sed -i '/if (new_value != old_value) {/a \
-	if (!new_value && bbg_process_setpermissive()) { \
-		length = -EACCES; \
-		goto out; \
-	}' $(srctree)/security/selinux/selinuxfs.c)
+    $(info -- BBG: Inserting bbg_process_setpermissive() check into sel_write_enforce for >=4.17 Kernel)
+    $(shell sed -i '/if (new_value != old_value) {/a \
+    if (!new_value && bbg_process_setpermissive()) { \
+        length = -EACCES; \
+        goto out; \
+    }' $(srctree)/security/selinux/selinuxfs.c)
   endif
 endif
 
