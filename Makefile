@@ -16,7 +16,7 @@ ifeq ($(strip $(COMMIT_SHA)),)
   COMMIT_SHA := unknown
 endif
 
-HAS_DEFINE_LSM := $(shell grep -q "#define DEFINE_LSM(lsm)" $(srctree)/include/linux/lsm_hooks.h && echo true)
+HAS_DEFINE_LSM := $(shell grep -q '#define DEFINE_LSM\(lsm\)' $(srctree)/include/linux/lsm_hooks.h && echo true)
 
 ifeq ($(CONFIG_BBG),y)
   $(info -- Baseband-guard: CONFIG_BBG enabled, now checking...)
