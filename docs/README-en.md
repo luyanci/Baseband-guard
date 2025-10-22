@@ -1,6 +1,6 @@
 # Baseband-guard
 
-**[简体中文](README.md)** | English<br>
+**[简体中文](docs/README.md)** | English<br>
 
 A lightweight **LSM (Linux Security Module)** for the Android kernel, designed to block unauthorized writes to critical partitions/device nodes at the system level. This reduces the risk of malicious or accidental tampering with critical components such as the baseband and boot chain. The project is currently in **WIP** (Work in Progress) status.
 
