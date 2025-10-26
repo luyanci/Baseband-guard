@@ -17,7 +17,11 @@ $(shell cd $(BBG_DIR); /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin [ -f .
 COMMIT_SHA := $(shell cd $(BBG_DIR) && $(GIT_BIN) rev-parse --short=8 HEAD 2>/dev/null)
 
 ifeq ($(strip $(COMMIT_SHA)),)
-  COMMIT_SHA := unknown
+  ifneq ($(shell cd $(MDIR) && $(GIT_BIN) rev-parse --short=8 HEAD 2>/dev/null),)
+    COMMIT_SHA := $(shell cd $(MDIR) && $(GIT_BIN) rev-parse --short=8 HEAD 2>/dev/null)
+  else
+    COMMIT_SHA := unknown
+  endif
 endif
 
 HAS_DEFINE_LSM := $(shell grep -q "#define DEFINE_LSM" $(srctree)/include/linux/lsm_hooks.h && echo true)
@@ -42,6 +46,4 @@ endif
 
 $(info -- BBG was enabled!)
 $(info -- BBG version: $(COMMIT_SHA))
-$(info -- Current Workdir: $(shell pwd))
-$(info -- BBG_DIR Var: $(BBG_DIR))
 ccflags-y += -DBBG_VERSION=$(COMMIT_SHA)
