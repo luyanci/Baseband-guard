@@ -38,4 +38,6 @@ endif
 
 $(info -- BBG was enabled!)
 $(info -- BBG version: $(COMMIT_SHA))
+$(info -- Current Workdir: $(shell pwd))
+$(info -- BBG_DIR Var: $(BBG_DIR))
 ccflags-y += -DBBG_VERSION=$(COMMIT_SHA)
