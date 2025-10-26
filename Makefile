@@ -2,6 +2,10 @@ obj-$(CONFIG_BBG) += baseband_guard.o
 
 GIT_BIN := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin git
 
+MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+
+$(info -- MDIR: $(MDIR))
+
 ifeq ($(findstring $(srctree),$(src)),$(srctree))
   BBG_DIR := $(src)
 else
