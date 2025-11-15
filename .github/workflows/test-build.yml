@@ -152,6 +152,14 @@ jobs:
           cd "$CONFIG"
           # Remove check_defconfig
           sed -i 's/check_defconfig//' ./common/build.config.gki
+          # Hey,rust_binder.ko,maybe we need to talk about why you makes build failed
+          if [ "${{ matrix.kernel_config.android_version }}-${{ matrix.kernel_config.kernel_version }}" == "android16-6.12" ]; then
+            sed -i '/_ARM64_GKI_MODULES_LIST = \[/,/\]/ {
+                /"drivers\/android\/rust_binder\.ko"/d;
+                /"drivers\/char\/hw_random\/cctrng\.ko"/a \    "drivers/android/rust_binder.ko",
+            }' ./common/modules.bzl
+          fi
+
 
       - name: Build
         run : |
