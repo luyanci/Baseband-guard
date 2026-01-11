@@ -77,20 +77,6 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
-      - name: Clean up build environment
-        if: false
-        run: |
-          # pick from https://github.com/cctv18/oppo_oplus_realme_sm8750/blob/test/.github/workflows/fastbuild_6.6.66.yml
-          sudo apt-mark hold firefox
-          sudo apt-mark hold libc-bin
-          sudo apt purge man-db
-          sudo rm -rf /var/lib/man-db/auto-update
-          # pick from https://github.com/easimon/maximize-build-space/blob/master/action.yml
-          sudo docker image prune --all --force
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo rm -rf /usr/share/dotnet
 
       - name: Set CONFIG Environment Variable
         run: |
